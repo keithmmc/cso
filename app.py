@@ -1,4 +1,5 @@
 from openDAO import openDAO
+from dataDAO import dataDAO
 
 from flask import Flask, url_for, request, redirect, abort, jsonify, render_template, session
 from markupsafe import escape
@@ -81,6 +82,51 @@ def loadOrgs():
     
 @app.route('/tags', methods=['GET'])
 def getAllTags():
-    results = dataDOA.getAllTags()
+    results = dataDAO.getAllTags()
     return jsonify(results)
     
+    
+@app.route('/tags/<string:char>', methods=['GET'])
+def findTagByChar(char):
+    foundTag = dataDAO.findTagByChar(char)
+    if len(foundTag) == 0:
+        return jsonify({}) , 204
+    return jsonify(foundTag)
+
+@app.route('/orgs', methods=['GET'])
+def getAllOrgs():
+    results = dataDAO.getAllOrgs()
+    return jsonify(results)
+
+@app.route('/orgs<string:query>', methods=['GET'])
+def findOrgs(query):
+    foundOrgs = dataDAO.findOrgs(query)
+    if len(foundOrgs) == 0:
+        return jsonify({}), 204 
+    return jsonify(foundOrgs)
+
+@app.route('/packages/<string:query>', methods=['GET'])
+def findDatasetsByName (query):
+    foundDatasets = dataDAO.findDatasetByName(query)
+    if len(foundDatasets) == 0:
+        return jsonify({}) , 204
+    return jsonify(foundDatasets)
+
+
+@app.route('/packages/<int:id>', methods =['GET'])
+def findDatasetById(id):
+    foundDataset = dataDAO.findDatasetById(id)
+    if len(foundDataset) == 0:
+        return jsonify({}) , 204 
+    return jsonify(foundDataset)
+
+@app.route('/resourcesUrls', methods = ['GET', 'DELETE'])
+def findDatasetUrls():
+    foundDatasetUrls = dataDAO.getDatasetUrls()
+    if len(foundDatasetUrls) == 0:
+        return jsonify({}) , 204 
+    return jsonify(foundDatasetUrls)
+
+
+
+
