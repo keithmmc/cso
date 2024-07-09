@@ -1,5 +1,6 @@
 from openDAO import openDAO
 from dataDAO import dataDAO
+from searchDAO import searchDAO
 
 from flask import Flask, url_for, request, redirect, abort, jsonify, render_template, session
 from markupsafe import escape
